@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bhargav Adepu">
+  <title>Bhargav Adepu</title>
+  <!--
+    A printed block: minium ground, paper letterform.
+
+    The B is the real Instrument Serif outline, extracted from the font file the
+    site is set in, so the mark and the masthead are literally the same letter.
+    Minium rather than ink because red is the one colour that holds up against
+    both a light and a dark browser chrome, which is where this actually lives.
+  -->
+  <rect width="64" height="64" fill="#b23a1e"/>
+  <!--
+    The stroke is not decoration: Instrument Serif is a high-contrast face and
+    its hairlines disappear at 16px. Outlining the glyph in its own colour
+    thickens the thin strokes just enough to survive a tab strip.
+  -->
+  <g transform="translate(32 32) scale(1.16) translate(-32 -32)" fill="#f6f2e9"
+     stroke="#f6f2e9" stroke-width="0.9" stroke-linejoin="round">
+    <path d="M32.39 53.60L19.97 53.60Q19.07 53.60 19.07 52.94Q19.07 52.40 19.85 52.22L21.23 51.98Q22.49 51.74 22.88 51.32Q23.27 50.90 23.27 49.64L23.27 14.36Q23.27 13.10 22.88 12.68Q22.49 12.26 21.23 12.02L19.85 11.78Q19.07 11.60 19.07 11.06Q19.07 10.40 19.97 10.40L32.15 10.40Q35.15 10.40 37.49 11.66Q39.83 12.92 41.18 15.08Q42.53 17.24 42.53 20Q42.53 22.70 40.94 25.01Q39.35 27.32 36.35 28.88Q35.99 29.06 35.99 29.36Q35.99 29.66 36.41 29.78Q40.49 31.16 42.71 34.19Q44.93 37.22 44.93 41.36Q44.93 44.90 43.31 47.69Q41.69 50.48 38.84 52.04Q35.99 53.60 32.39 53.60M30.71 28.94Q33.89 28.94 36.02 26.45Q38.15 23.96 38.15 20.24Q38.15 16.52 36.11 14.21Q34.07 11.90 30.71 11.90Q27.53 11.90 27.53 14.30L27.53 25.64Q27.53 27.38 28.28 28.16Q29.03 28.94 30.71 28.94M31.61 52.10Q35.51 52.10 37.97 49.13Q40.43 46.16 40.43 41.18Q40.43 36.20 37.94 33.32Q35.45 30.44 31.25 30.44Q27.53 30.44 27.53 33.38L27.53 47.96Q27.53 52.10 31.61 52.10"/>
+  </g>
+</svg>

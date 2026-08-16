@@ -1,0 +1,59 @@
+rules_version = '2';
+
+/**
+ * Firestore security rules.
+ *
+ * The site never reads or writes Firestore from the browser — every path goes
+ * through a Next.js route handler using the Admin SDK, which bypasses these
+ * rules entirely. So the correct posture for direct client access is: deny
+ * everything. If a rule here ever needs to allow a write, something has been
+ * wired up wrong.
+ *
+ * Deploy with:  firebase deploy --only firestore:rules
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Published content. Public read is harmless and useful if you ever want to
+    // consume it from another client; writes stay server-side only.
+    match /projects/{slug} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /experience/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /profile/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Counters. Written by the server so they cannot be inflated from a console.
+    match /views/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /reactions/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Private. Correspondence, analytics events and rate-limit state are only
+    // ever touched by the Admin SDK — no client should see any of it.
+    match /messages/{id} {
+      allow read, write: if false;
+    }
+    match /events/{id} {
+      allow read, write: if false;
+    }
+    match /ratelimits/{id} {
+      allow read, write: if false;
+    }
+
+    // Anything not named above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
