@@ -31,7 +31,11 @@ function serviceAccount() {
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  let privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  if (privateKey) {
+    privateKey = privateKey.replace(/^"|"$/g, "");
+  }
+
   if (projectId && clientEmail && privateKey) {
     return { projectId, clientEmail, privateKey };
   }
@@ -66,8 +70,9 @@ export function adminDb(): Firestore | null {
   if (!instance) return null;
   try {
     return getFirestore(instance);
-  } catch {
-    return null;
+  } catch (error) {
+    console.error("[firebase] getFirestore failed:", error);
+    throw error;
   }
 }
 
@@ -76,8 +81,9 @@ export function adminAuth(): Auth | null {
   if (!instance) return null;
   try {
     return getAuth(instance);
-  } catch {
-    return null;
+  } catch (error) {
+    console.error("[firebase] adminAuth init failed:", error);
+    throw error;
   }
 }
 
