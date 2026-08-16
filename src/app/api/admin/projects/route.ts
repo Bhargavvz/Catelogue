@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { adminDb, verifyOwner } from "@/lib/firebase/admin";
+import { serverError } from "@/lib/api";
 import { ProjectSchema } from "@/lib/schema";
 import { seed } from "@/content/seed";
 import type { Project } from "@/lib/types";
@@ -19,6 +20,14 @@ export async function GET(request: Request) {
   const auth = await verifyOwner(request);
   if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
+  try {
+    return await list();
+  } catch (error) {
+    return serverError("Listing projects", error);
+  }
+}
+
+async function list() {
   const db = adminDb()!;
   const snapshot = await db.collection("projects").get();
 
@@ -66,7 +75,11 @@ export async function PUT(request: Request) {
   }
 
   const project = parsed.data;
-  await adminDb()!.collection("projects").doc(project.slug).set(project);
+  try {
+    await adminDb()!.collection("projects").doc(project.slug).set(project);
+  } catch (error) {
+    return serverError("Saving the project", error);
+  }
   refresh(project.slug);
 
   return NextResponse.json({ ok: true, slug: project.slug });
@@ -81,7 +94,11 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Bad slug." }, { status: 400 });
   }
 
-  await adminDb()!.collection("projects").doc(slug).delete();
+  try {
+    await adminDb()!.collection("projects").doc(slug).delete();
+  } catch (error) {
+    return serverError("Deleting the project", error);
+  }
   refresh(slug);
   return NextResponse.json({ ok: true });
 }

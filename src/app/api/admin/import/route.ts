@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { adminDb, verifyOwner } from "@/lib/firebase/admin";
+import { serverError } from "@/lib/api";
 import { seed } from "@/content/seed";
 
 export const runtime = "nodejs";
@@ -28,7 +29,11 @@ export async function POST(request: Request) {
   }
   batch.set(db.collection("profile").doc("main"), seed.profile);
 
-  await batch.commit();
+  try {
+    await batch.commit();
+  } catch (error) {
+    return serverError("Importing the catalogue", error);
+  }
 
   revalidatePath("/");
   revalidatePath("/work");

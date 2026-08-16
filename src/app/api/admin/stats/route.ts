@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminDb, verifyOwner } from "@/lib/firebase/admin";
+import { serverError } from "@/lib/api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,6 +16,14 @@ export async function GET(request: Request) {
   const auth = await verifyOwner(request);
   if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
+  try {
+    return await collect();
+  } catch (error) {
+    return serverError("Reading reader statistics", error);
+  }
+}
+
+async function collect() {
   const db = adminDb()!;
   const [viewsSnap, eventsSnap] = await Promise.all([
     db.collection("views").orderBy("count", "desc").limit(50).get(),
